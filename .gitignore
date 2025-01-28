@@ -173,3 +173,6 @@ cython_debug/
 src/data/database.ini
 timemanagement.session.sql
 src/data/storage_account.ini
+
+consultants_*
+customers_*
