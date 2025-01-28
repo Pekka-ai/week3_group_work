@@ -83,3 +83,11 @@ def db_delete_consultant(id:int):
                 return json.dumps(result)
     except (psycopg2.DatabaseError, Exception) as error:
             print(error)
+
+
+
+if __name__ == "__main__":
+    print(db_get_consultants())
+    #print(db_create_consultant("Katy Tao"))
+    #print(db_update_consultant("Jane Doe", 1))
+    

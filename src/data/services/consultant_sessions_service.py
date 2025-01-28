@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from flask import jsonify
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -22,12 +22,16 @@ def db_get_consultant_sessions():
     except (psycopg2.DatabaseError, Exception) as error:
             print(error) 
 
+
 def db_create_consultant_session(start:datetime, end:datetime, lunch_break:int, consultant_id:int, customer_id:int):
     check_consultant=db_get_consultant_by_id(consultant_id)
     check_customer=db_get_customer_by_id(customer_id)
+    
+    if isinstance(check_consultant, tuple) and check_consultant[1] == 404:
+        return check_consultant
 
-    if check_consultant.status_code == 404 and check_customer.status_code == 404:
-        return jsonify({"error": "invalid consultant or customer"}), 400
+    elif isinstance(check_customer, tuple) and check_customer[1] == 404:
+        return check_customer
 
     else: 
         command=(
@@ -114,3 +118,21 @@ def db_delete_consultant_session(id:int):
     except (psycopg2.DatabaseError, Exception) as error:
             print(error)
             return jsonify({"error": "Database error"}), 500
+    
+
+if __name__ == "__main__":
+    """
+    start_time = datetime(2025, 1, 28, 10, 0, 0)
+    end_time = datetime(2025, 1, 28, 12, 0, 0)
+    lunch_break = 30
+    consultant_id = 4
+    customer_id = 2
+
+    # Call the function
+    response = db_create_consultant_session(start_time, end_time, lunch_break, consultant_id, customer_id)
+    print(response)
+    """
+
+
+    print(db_get_consultant_session_by_id(1))
+        
