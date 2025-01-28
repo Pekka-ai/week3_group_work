@@ -23,7 +23,7 @@ def create_consultant_session():
         result = db_create_consultant_session(start, end, lunch_break, consultant_id, customer_id)
 
         if isinstance(result, tuple):
-            return result  # Return the error tuple directly
+            return result
 
         return result, 201
 
