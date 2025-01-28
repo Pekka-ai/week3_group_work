@@ -169,3 +169,7 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+src/data/database.ini
+src/data/storage_account.ini
