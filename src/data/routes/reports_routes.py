@@ -27,7 +27,7 @@ def generate_report():
         report_file = generate_reports(year, start_month, end_month, upload_to_blob=True)
 
         # Palautetaan raportin nimi vastauksena
-        return jsonify({"message": f"Reports generated: {report_file}"}), 200
+        return jsonify({"message": f"Reports {report_file} successfully uploaded to Azure Blob Storage"}), 200
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
