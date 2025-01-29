@@ -17,7 +17,6 @@ def db_get_consultant_sessions():
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute(command)
                 consultant_sessions = cur.fetchall()
-                conn.commit()
                 return jsonify({"consultant_sessions_list": consultant_sessions})
     except (psycopg2.DatabaseError, Exception) as error:
             print(error) 

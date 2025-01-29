@@ -14,7 +14,6 @@ def db_get_consultants():
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute(command)
                 consultants = cur.fetchall()
-                conn.commit()
                 return json.dumps({"consultants_list": consultants})
     except (psycopg2.DatabaseError, Exception) as error:
             print(error) 
@@ -44,7 +43,6 @@ def db_get_consultant_by_id(id):
         with psycopg2.connect(**config()) as conn:
             with conn.cursor() as cur:
                 cur.execute(command, (id,))
-                conn.commit()
                 row = cur.fetchone()
                 if row is None:
                     return jsonify({"error": "Consultant not found"}), 404
