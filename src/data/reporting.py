@@ -256,11 +256,8 @@ def generate_reports(year=None, start_month=None, end_month=None, upload_to_blob
         return f"{consultant_report_file}, {consultant_report_file}"
     else:
         print("No time tracking data retrieved from the database.")
-        return ("no data found")
+        return (f"no data found for {start_month_name} - {end_month_name}")
     
-
-
-
 if __name__ == "__main__":
     report_files = generate_reports()
     print(f"Generated reports: {report_files}")
