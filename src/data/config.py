@@ -10,20 +10,16 @@ def get_storage_credentials():
     host = client.get_secret("database-host").value
     database = client.get_secret("database-name").value
     database_user = client.get_secret("database-user").value
-    password = client.get_secret("password").value
-    port = client.get_secret("port").value
-    
-    print("Databasedatabasedatabase")
-    print(host +database_user +database_user +database_user +password +port)
+    password = client.get_secret("database-password").value
+    port = client.get_secret("database-port").value
+
     return {
             "host": host,
             "database": database,
             "user": database_user,
             "password": password,
-            "port": port
+            "port": port,
             }
-
-
 
 def config(filename='src\\data\\database.ini', section='postgresql'):
     parser = ConfigParser()

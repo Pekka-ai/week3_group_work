@@ -176,3 +176,5 @@ src/data/storage_account.ini
 
 consultants_*
 customers_*
+
+src/data/database.ini
