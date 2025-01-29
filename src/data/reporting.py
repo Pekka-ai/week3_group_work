@@ -222,8 +222,7 @@ def generate_consultant_report(records, report_name, upload_to_blob=False):
     return report_filename
 
 
-
-def main(year=None, start_month=None, end_month=None, upload_to_blob=True):
+def generate_reports(year=None, start_month=None, end_month=None, upload_to_blob=True):
 
     if year is None:
         year = datetime.now().year
@@ -254,9 +253,14 @@ def main(year=None, start_month=None, end_month=None, upload_to_blob=True):
 
         print(f"Customer report saved to: {customer_report_file}")
         print(f"Consultant report saved to: {consultant_report_file}")
+        return f"{consultant_report_file}, {consultant_report_file}"
     else:
         print("No time tracking data retrieved from the database.")
+        return ("no data found")
+    
+
 
 
 if __name__ == "__main__":
-   main()
+    report_files = generate_reports()
+    print(f"Generated reports: {report_files}")
