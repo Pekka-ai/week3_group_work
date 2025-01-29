@@ -4,16 +4,38 @@ import psycopg2
 from config import config
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import configparser
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
 
+
+def get_secret_from_keyvault(secret_name):
+    try:
+        # Luo KeyVaultin asiakas ja yhteys tunnuksilla
+        credential = DefaultAzureCredential()
+        keyvault_url = "https://leija-pekka-secrets.vault.azure.net/"  # Korvaa tämä oman Key Vaultin URL-osoitteella
+        client = SecretClient(vault_url=keyvault_url, credential=credential)
+        
+        # Hae salaisuus Key Vaultista
+        secret = client.get_secret(secret_name)
+        return secret.value  # Palautetaan salaisuuden arvo
+
+    except Exception as e:
+        print(f"Error fetching secret {secret_name} from Azure Key Vault: {e}")
+        return None
 
 def upload_to_azure_blob(file_path, container_name, blob_name):
     try:
-        config = configparser.ConfigParser()
-        config.read('src\\data\\storage_account.ini')
-        account_name = config['azure_storage']['account_name']
-        account_key = config['azure_storage']['account_key']
-        container_name = config['azure_storage']['container_name']
 
+        account_name = get_secret_from_keyvault('account-name')  # Esim. salaisuuden nimi Key Vaultissa
+        account_key = get_secret_from_keyvault('account-key')    # Esim. salaisuuden nimi Key Vaultissa
+        container_name = get_secret_from_keyvault('container-name')  
+        print(account_name)
+        print(account_key)
+        print(container_name)
+
+        if not all([account_name, account_key, container_name]):
+            print("Error: Missing secrets from Key Vault.")
+            return
         # Yhdistä Azure Blob Storageen
         connection_string = f"DefaultEndpointsProtocol=https;AccountName={account_name};AccountKey={account_key};EndpointSuffix=core.windows.net"
         
