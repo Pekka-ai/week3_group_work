@@ -18,10 +18,8 @@ def get_storage_credentials():
             "database": database,
             "user": database_user,
             "password": password,
-            "port": port
+            "port": port,
             }
-
-
 
 def config(filename='src\\data\\database.ini', section='postgresql'):
     parser = ConfigParser()
@@ -34,3 +32,5 @@ def config(filename='src\\data\\database.ini', section='postgresql'):
     else:
         raise Exception('Section {0} not found in the {1} file'.format(section, filename))
     return db
+
+

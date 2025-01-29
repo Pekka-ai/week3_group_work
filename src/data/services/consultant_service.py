@@ -1,6 +1,6 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from config import config
+from config import get_storage_credentials
 import json
 from flask import jsonify
 
@@ -10,11 +10,10 @@ def db_get_consultants():
         SELECT * FROM consultants;
         """)
     try:
-        with psycopg2.connect(**config()) as conn:
+        with psycopg2.connect(**get_storage_credentials()) as conn:
             with conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute(command)
                 consultants = cur.fetchall()
-                conn.commit()
                 return json.dumps({"consultants_list": consultants})
     except (psycopg2.DatabaseError, Exception) as error:
             print(error) 
@@ -25,7 +24,7 @@ def db_create_consultant(name:str):
         INSERT INTO consultants (name) VALUES (%s);
         """)
     try:
-        with psycopg2.connect(**config()) as conn:
+        with psycopg2.connect(**get_storage_credentials()) as conn:
             with conn.cursor() as cur:
                 cur.execute(command, (name,))
                 conn.commit()
@@ -41,10 +40,9 @@ def db_get_consultant_by_id(id):
         SELECT * FROM consultants WHERE id = %s;
         """)
     try:
-        with psycopg2.connect(**config()) as conn:
+        with psycopg2.connect(**get_storage_credentials()) as conn:
             with conn.cursor() as cur:
                 cur.execute(command, (id,))
-                conn.commit()
                 row = cur.fetchone()
                 if row is None:
                     return jsonify({"error": "Consultant not found"}), 404
@@ -59,7 +57,7 @@ def db_update_consultant(name:str,id: int):
         UPDATE consultant SET name = %s, WHERE id = %s;
         """)
     try:
-        with psycopg2.connect(**config()) as conn:
+        with psycopg2.connect(**get_storage_credentials()) as conn:
             with conn.cursor() as cur:
                 cur.execute(command, (name, id))
                 conn.commit()
@@ -75,7 +73,7 @@ def db_delete_consultant(id:int):
         DELETE FROM consultant WHERE id = %s;
         """)
     try:
-        with psycopg2.connect(**config()) as conn:
+        with psycopg2.connect(**get_storage_credentials()) as conn:
             with conn.cursor() as cur:
                 cur.execute(command, (int(id),)) 
                 conn.commit()
