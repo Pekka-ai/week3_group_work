@@ -1,7 +1,7 @@
 from collections import defaultdict
 from datetime import timedelta, datetime
 import psycopg2
-from config import config
+from config import get_storage_credentials
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import configparser
 from azure.identity import DefaultAzureCredential
@@ -26,12 +26,9 @@ def get_secret_from_keyvault(secret_name):
 def upload_to_azure_blob(file_path, container_name, blob_name):
     try:
 
-        account_name = get_secret_from_keyvault('account-name')  # Esim. salaisuuden nimi Key Vaultissa
-        account_key = get_secret_from_keyvault('account-key')    # Esim. salaisuuden nimi Key Vaultissa
+        account_name = get_secret_from_keyvault('account-name')
+        account_key = get_secret_from_keyvault('account-key')
         container_name = get_secret_from_keyvault('container-name')  
-        print(account_name)
-        print(account_key)
-        print(container_name)
 
         if not all([account_name, account_key, container_name]):
             print("Error: Missing secrets from Key Vault.")
@@ -62,7 +59,7 @@ def fetch_consultant_data(year, months):
     con = None
     try:
         # Lue tietokannan asetukset config.py-tiedostosta
-        con = psycopg2.connect(**config())
+        con = psycopg2.connect(**get_storage_credentials())
         cursor = con.cursor()
         query =  """
         SELECT 
