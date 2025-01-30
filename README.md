@@ -90,6 +90,18 @@ Set up a Python virtual environment:
 Activate the virtual environment:
 - . venv/bin/activate
 
+Run the application:
+- python app.py    
+or to run it in the background: 
+- nohup python app.py &
+
+To close the application, you can either:
+- Press `CTRL+C`  in the terminal where the app is running.  
+Alternatively, if you want to check the running applications and kill it manually:
+- ps aux | grep python    
+Then, kill the application by using its process ID (PID):     
+- kill `<PID>`
+
 ## Creating a group on the virtual machine and assigning the necessary permissions:
 
 Create a new group, for example, projectgroup, if it doesn't already exist:
