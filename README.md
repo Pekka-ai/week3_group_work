@@ -27,17 +27,17 @@ Consultants:
 
 Customers:
 
-`GET /customers → Get customers.`
-`POST /customers → Create a customer.`
+`GET /customers → Get customers.`    
+`POST /customers → Create a customer.`   
 
 Consultant Sessions:
 
-`GET /consultant_sessions → Get all sessions.`
-`POST /consultant_sessions → Create a session.`
-`PUT /consultant_sessions/<id> → Update a session.`
-`DELETE /consultant_sessions/<id> → Delete a session`
+`GET /consultant_sessions → Get all sessions.`   
+`POST /consultant_sessions → Create a session.`   
+`PUT /consultant_sessions/<id> → Update a session.`   
+`DELETE /consultant_sessions/<id> → Delete a session`   
 
-Reports:
+Reports:    
 `POST /reports → Create reports in Azure and the root folder.`
   
 
