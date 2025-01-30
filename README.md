@@ -98,5 +98,5 @@ TThe result should look like this:
   - rwx: The group (projectgroup) has the same permissions as the owner: read, write, and execute.
   - r-x: Others have permission to read and execute files, but not write.
 
-he command getent group shows all the users belonging to a specific group:
+The command getent group shows all the users belonging to a specific group:
 - getent group projectgroup
