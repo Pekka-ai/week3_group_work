@@ -16,7 +16,31 @@ This is a Flask-based REST API for managing consultant sessions, consultants, an
 3. Install dependencies:
     - pip install -r requirements.txt
 3. Set up the database:Configure PostgreSQL credentials in config.py.
-4. Run the application:python app.py
+4. Create database and tables:
+```sql
+CREATE TABLE consultant_sessions (
+  id SERIAL PRIMARY KEY,
+  consultant_id INT NOT NULL,
+  customer_id INT NOT NULL,
+  start_time TIMESTAMP NOT NULL,
+  end_time TIMESTAMP NOT NULL,
+  lunch_break INT NOT NULL,
+  UNIQUE (consultant_id, start_time),
+  FOREIGN KEY (consultant_id) REFERENCES consultants(id) ON DELETE CASCADE,
+  FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS customers (
+  id SERIAL PRIMARY KEY NOT NULL,
+  name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS consultants (
+  id SERIAL PRIMARY KEY NOT NULL,
+  name VARCHAR(50) NOT NULL
+);
+```
+5. Run the application:python app.py
 
 ## API Endpoints
 
