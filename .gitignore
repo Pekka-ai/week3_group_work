@@ -169,3 +169,12 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+src/data/database.ini
+timemanagement.session.sql
+src/data/storage_account.ini
+
+consultants_*
+customers_*
+
+src/data/database.ini
