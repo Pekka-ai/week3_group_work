@@ -64,6 +64,8 @@ Consultant Sessions:
 Reports:    
 `POST /reports → Create reports in Azure and the root folder.`
   
+## Frontend   
+The frontend (work in progress) can be found at: https://github.com/Pekka-ai/week3_consultants_front
 
 ## Running the Project on a Virtual Machine (Linux-based)
 Connect to the virtual machine via the Azure Portal.
