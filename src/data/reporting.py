@@ -94,14 +94,14 @@ def fetch_consultant_data(year, months):
             con.close()
 
 
-def generate_customer_report(records,report_name, upload_to_blob=False):
+def generate_customer_report(records, report_name, upload_to_blob=False):
     customer_report = defaultdict(lambda: {
         'total_hours': timedelta(),
         'details': [],
-        'consultants': defaultdict(lambda: timedelta())  # Konsulttien työajat asiakaskohtaisesti
+        'consultants': defaultdict(lambda: timedelta())
     })
-    
-    consultant_total_hours = defaultdict(timedelta)  # Konsultin kokonaistyömäärä kaikille asiakkaille
+
+    consultant_total_hours = defaultdict(timedelta)
 
     for record in records:
         consultant_id, consultant_name, customer_id, customer_name, start_time, end_time, lunch_break = record
@@ -130,36 +130,26 @@ def generate_customer_report(records,report_name, upload_to_blob=False):
         f.write("Customers Time Report\n")
         f.write("======================\n\n")
 
-        # Asiakaskohtainen raportti
         for customer_id, data in customer_report.items():
-            customer_name = data['details'][0]['customer_name']  # Oletetaan, että kaikilla asiakas-id:llä on sama nimi
+            customer_name = data['details'][0]['customer_name']
             f.write(f"---- Customer: {customer_name} (ID: {customer_id}) ----\n")
-            f.write(f"Total work hours: {data['total_hours']}\n")
+            f.write(f"Total work hours: {format_timedelta(data['total_hours'])}\n")
             f.write("Detailed records:\n")
+
             for detail in data['details']:
                 f.write(f"  Consultant: {detail['consultant_name']} (ID: {detail['consultant_id']}) | ")
                 f.write(f"Start time: {detail['start_time']}, End time: {detail['end_time']} | ")
-                f.write(f"Lunch break (min): {detail['lunch_break']} | Work duration: {detail['work_duration']}\n")
-            f.write("\n")
+                f.write(f"Lunch break (min): {detail['lunch_break']} | Work duration: {format_timedelta(detail['work_duration'])}\n")
 
-            # Lisätään asiakkaan konsulttien yhteiset työajat
-            f.write("Consultant total work hours for this customer:\n")
+            f.write("\nConsultant total work hours for this customer:\n")
             for consultant_id, work_hours in data['consultants'].items():
                 consultant_name = next(record[1] for record in records if record[0] == consultant_id)
-                f.write(f"  Consultant: {consultant_name} (ID: {consultant_id}) - Total work hours: {work_hours}\n")
+                f.write(f"  Consultant: {consultant_name} (ID: {consultant_id}) - Total work hours: {format_timedelta(work_hours)}\n")
 
             f.write("\n")
 
-        # # Lisätään kokonaistyömäärä kaikille asiakkaille
-        # f.write("======================\n")
-        # f.write("Consultant total work hours for all customers:\n")
-        # for consultant_id, total_work_hours in consultant_total_hours.items():
-        #     # Haetaan konsultin nimi erikseen tälle ID:lle
-        #     consultant_name = next(record[1] for record in records if record[0] == consultant_id)
-        #     f.write(f"  Consultant: {consultant_name} (ID: {consultant_id}) - Total work hours: {total_work_hours}\n")
-
     print(f"Customer report has been created and saved to: {report_filename}")
-    # Upload to Azure Blob
+    
     if upload_to_blob:
         blob_name = f"{report_filename}"
         upload_to_azure_blob(report_filename, "container_name", blob_name)
@@ -170,10 +160,10 @@ def generate_customer_report(records,report_name, upload_to_blob=False):
 def generate_consultant_report(records, report_name, upload_to_blob=False):
     consultant_report = defaultdict(lambda: {
         'total_hours': timedelta(),
-        'customers': defaultdict(lambda: timedelta()),  # Konsultin työajat asiakaskohtaisesti
-        'days': set()  # Päivämäärien tallentaminen työpäivien laskemiseksi
+        'customers': defaultdict(lambda: timedelta()),
+        'days': set()
     })
-    
+
     for record in records:
         consultant_id, consultant_name, customer_id, customer_name, start_time, end_time, lunch_break = record
         work_duration = end_time - start_time
@@ -181,7 +171,7 @@ def generate_consultant_report(records, report_name, upload_to_blob=False):
 
         consultant_report[consultant_id]['total_hours'] += work_duration
         consultant_report[consultant_id]['customers'][customer_id] += work_duration
-        consultant_report[consultant_id]['days'].add(start_time.date())  # Lisää työpäivä
+        consultant_report[consultant_id]['days'].add(start_time.date())
 
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     report_filename = f"consultants_{report_name}__{timestamp}.txt"
@@ -190,36 +180,38 @@ def generate_consultant_report(records, report_name, upload_to_blob=False):
         f.write("Consultant Time Report\n")
         f.write("======================\n\n")
 
-        # Konsulttikohtainen raportti
         for consultant_id, data in consultant_report.items():
-            # Haetaan konsultin nimi erikseen tälle ID:lle
             consultant_name = next(record[1] for record in records if record[0] == consultant_id)
             f.write(f"---- Consultant: {consultant_name} (ID: {consultant_id}) ----\n")
-            f.write(f"Total work hours: {data['total_hours']}\n")
+            f.write(f"Total work hours: {format_timedelta(data['total_hours'])}\n")
 
-            # Lasketaan keskimääräiset työtunnit päivää kohti
             total_days = len(data['days'])
             if total_days > 0:
                 avg_work_hours = data['total_hours'] / total_days
-                f.write(f"Average work hours per day: {avg_work_hours}\n")
+                f.write(f"Average work hours per day: {format_timedelta(avg_work_hours)}\n")
             else:
                 f.write("Average work hours per day: No working days recorded\n")
-            
-            # Työtunnit asiakaskohtaisesti
+
             f.write("Work hours per customer:\n")
             for customer_id, work_hours in data['customers'].items():
-                f.write(f"  Customer ID: {customer_id} - Total work hours: {work_hours}\n")
+                f.write(f"  Customer ID: {customer_id} - Total work hours: {format_timedelta(work_hours)}\n")
 
             f.write("\n")
 
     print(f"Consultant report has been created and saved to: {report_filename}")
-    # Upload to Azure Blob
 
     if upload_to_blob:
         blob_name = f"{report_filename}"
         upload_to_azure_blob(report_filename, "container_name", blob_name)
 
     return report_filename
+
+
+def format_timedelta(td):
+    total_seconds = int(td.total_seconds())
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return f"{hours:02}:{minutes:02}:{seconds:02}"
 
 
 def generate_reports(year=None, start_month=None, end_month=None, upload_to_blob=True):
