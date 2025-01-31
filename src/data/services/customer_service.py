@@ -54,7 +54,7 @@ def db_create_customer(name:str):
 def db_update_customer(id: int, name:str):
     command=(
         """
-        UPDATE customers SET name = %s, WHERE id = %s;
+        UPDATE customers SET name = %s WHERE id = %s;
         """)
     try:
         with psycopg2.connect(**get_storage_credentials()) as conn:

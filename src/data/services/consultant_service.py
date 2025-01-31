@@ -54,7 +54,7 @@ def db_get_consultant_by_id(id):
 def db_update_consultant(id:int, name:str):
     command=(
         """
-        UPDATE consultants SET name = %s, WHERE id = %s;
+        UPDATE consultants SET name = %s WHERE id = %s;
         """)
     try:
         with psycopg2.connect(**get_storage_credentials()) as conn:
