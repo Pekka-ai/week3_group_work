@@ -13,6 +13,6 @@ app.register_blueprint(customers_bp)
 app.register_blueprint(report_bp)
 
 if __name__ == "__main__":
-	# Virtuaalikoneella ajettaessa
-	app.run(host="0.0.0.0", port=5000)
-	#app.run()
+    # Virtuaalikoneella ajettaessa
+    app.run(host="0.0.0.0", port=5000)
+    #app.run()
