@@ -46,27 +46,27 @@ CREATE TABLE IF NOT EXISTS consultants (
 
 Consultants:
 
-`GET /consultants → Get all consultants.`  
-`POST /consultants → Create a consultant.`  
-`PUT /consultants/<id> → Update a consultant.`  
-`DELETE /consultants/<id> → Delete a consultant.` 
+`GET /consultants` → Get all consultants.  
+`POST /consultants` → Create a consultant.  
+`PUT /consultants/<id>` → Update a consultant.  
+`DELETE /consultants/<id>` → Delete a consultant. 
 
 Customers:
 
-- `GET /consultants` → Get all consultants.
-- `POST /consultants` → Create a consultant.
-- `PUT /consultants/<id>` → Update a consultant.
-- `DELETE /consultants/<id>` → Delete a consultant.   
+`GET /consultants` → Get all consultants.    
+`POST /consultants` → Create a consultant.   
+`PUT /consultants/<id>` → Update a consultant.   
+`DELETE /consultants/<id>` → Delete a consultant.   
 
 Consultant Sessions:
 
-`GET /consultant_sessions → Get all sessions.`   
-`POST /consultant_sessions → Create a session.`   
-`PUT /consultant_sessions/<id> → Update a session.`   
-`DELETE /consultant_sessions/<id> → Delete a session`   
+`GET /consultant_sessions` → Get all sessions.   
+`POST /consultant_sessions` → Create a session.   
+`PUT /consultant_sessions/<id>` → Update a session.   
+`DELETE /consultant_sessions/<id>` → Delete a session.   
 
 Reports:    
-`POST /reports → Create reports in Azure and the root folder.`
+`POST /reports` → Create reports in Azure and the root folder.
   
 ## Frontend   
 The frontend (work in progress) can be found at: https://github.com/Pekka-ai/week3_consultants_front
