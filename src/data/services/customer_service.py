@@ -61,8 +61,10 @@ def db_update_customer(id: int, name:str):
             with conn.cursor() as cur:
                 cur.execute(command, (name, id))
                 conn.commit()
+                if cur.rowcount == 0:
+                        return jsonify({"error": "Customer not found"}), 404
                 result = {"success": "updated customer id: %s " % id}
-                return json.dumps(result)
+                return jsonify(result)
     except (psycopg2.DatabaseError, Exception) as error:
             print(error) 
 
@@ -77,8 +79,10 @@ def db_delete_customer(id:int):
             with conn.cursor() as cur:
                 cur.execute(command, (int(id),)) 
                 conn.commit()
-                result = {"success": "deleted customer id: %s " % id}
-                return json.dumps(result)
+                if cur.rowcount == 0:
+                   return jsonify({"error": "Customer not found"}), 404
+                result = {"success": "deleted customer id: %s" % id}
+                return jsonify(result)
     except (psycopg2.DatabaseError, Exception) as error:
             print(error)
 

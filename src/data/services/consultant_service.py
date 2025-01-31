@@ -54,15 +54,17 @@ def db_get_consultant_by_id(id):
 def db_update_consultant(id:int, name:str):
     command=(
         """
-        UPDATE consultant SET name = %s, WHERE id = %s;
+        UPDATE consultants SET name = %s, WHERE id = %s;
         """)
     try:
         with psycopg2.connect(**get_storage_credentials()) as conn:
             with conn.cursor() as cur:
                 cur.execute(command, (name, id))
                 conn.commit()
+                if cur.rowcount == 0:
+                        return jsonify({"error": "Consultant not found"}), 404
                 result = {"success": "updated consultant id: %s " % id}
-                return json.dumps(result)
+                return jsonify(result)
     except (psycopg2.DatabaseError, Exception) as error:
             print(error) 
 
@@ -70,15 +72,17 @@ def db_update_consultant(id:int, name:str):
 def db_delete_consultant(id:int):
     command=(
         """
-        DELETE FROM consultant WHERE id = %s;
+        DELETE FROM consultants WHERE id = %s;
         """)
     try:
         with psycopg2.connect(**get_storage_credentials()) as conn:
             with conn.cursor() as cur:
                 cur.execute(command, (int(id),)) 
                 conn.commit()
-                result = {"success": "deleted consultant id: %s " % id}
-                return json.dumps(result)
+                if cur.rowcount == 0:
+                   return jsonify({"error": "Consultant not found"}), 404
+                result = {"success": "deleted consultant id: %s" % id}
+                return jsonify(result)
     except (psycopg2.DatabaseError, Exception) as error:
             print(error)
 
