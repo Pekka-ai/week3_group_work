@@ -34,13 +34,13 @@ def upload_to_azure_blob(file_path, container_name, blob_name):
             print("Error: Missing secrets from Key Vault.")
             return
         # Yhdistä Azure Blob Storageen
-        blob_service_client = BlobServiceClient(account_url=private_endpoint_fqdn, credential=account_key)
-        """
+        #blob_service_client = BlobServiceClient(account_url=private_endpoint_fqdn, credential=account_key)
+        
         connection_string = f"DefaultEndpointsProtocol=https;AccountName={account_name};AccountKey={account_key};EndpointSuffix=core.windows.net"
         
         # Luo BlobServiceClient-yhteys
         blob_service_client = BlobServiceClient.from_connection_string(connection_string)
-        """
+        
    
         
         # Luo BlobClient-objekti
