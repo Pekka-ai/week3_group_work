@@ -51,7 +51,7 @@ def db_get_consultant_by_id(id):
             print(error) 
 
 
-def db_update_consultant(name:str,id: int):
+def db_update_consultant(id:int, name:str):
     command=(
         """
         UPDATE consultant SET name = %s, WHERE id = %s;

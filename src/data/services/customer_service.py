@@ -51,7 +51,7 @@ def db_create_customer(name:str):
             print(error)
 
 
-def db_update_customer(name:str,id: int):
+def db_update_customer(id: int, name:str):
     command=(
         """
         UPDATE customers SET name = %s, WHERE id = %s;
