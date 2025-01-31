@@ -2,8 +2,7 @@ from collections import defaultdict
 from datetime import timedelta, datetime
 import psycopg2
 from config import get_storage_credentials
-from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
-import configparser
+from azure.storage.blob import BlobServiceClient
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
 
@@ -29,15 +28,20 @@ def upload_to_azure_blob(file_path, container_name, blob_name):
         account_name = get_secret_from_keyvault('account-name')
         account_key = get_secret_from_keyvault('account-key')
         container_name = get_secret_from_keyvault('container-name')  
+        private_endpoint_fqdn = get_secret_from_keyvault('private-storage-endpoint')
 
         if not all([account_name, account_key, container_name]):
             print("Error: Missing secrets from Key Vault.")
             return
         # Yhdistä Azure Blob Storageen
+        blob_service_client = BlobServiceClient(account_url=private_endpoint_fqdn, credential=account_key)
+        """
         connection_string = f"DefaultEndpointsProtocol=https;AccountName={account_name};AccountKey={account_key};EndpointSuffix=core.windows.net"
         
         # Luo BlobServiceClient-yhteys
         blob_service_client = BlobServiceClient.from_connection_string(connection_string)
+        """
+   
         
         # Luo BlobClient-objekti
         container_client = blob_service_client.get_container_client(container_name)
