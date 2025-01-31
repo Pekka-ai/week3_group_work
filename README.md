@@ -47,16 +47,16 @@ CREATE TABLE IF NOT EXISTS consultants (
 Consultants:
 
 `GET /consultants → Get all consultants.`  
-`POST /consultants → Create a consultant.`
-`PUT /consultants/<id> → Update a consultant.`   
-`DELETE /consultants/<id> → Delete a consultant`  
+`POST /consultants → Create a consultant.`  
+`PUT /consultants/<id> → Update a consultant.`  
+`DELETE /consultants/<id> → Delete a consultant.` 
 
 Customers:
 
-`GET /customers → Get customers.`    
-`POST /customers → Create a customer.` 
-`PUT /customers/<id> → Update a customer.`   
-`DELETE /customers/<id> → Delete a customer`    
+- `GET /consultants` → Get all consultants.
+- `POST /consultants` → Create a consultant.
+- `PUT /consultants/<id>` → Update a consultant.
+- `DELETE /consultants/<id>` → Delete a consultant.   
 
 Consultant Sessions:
 
